@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="styler.css" media="print" rel="stylesheet">
+    <title>{{ title }}</title>
+    <meta name="description" content="Rangkuman informasi kas">
+    <meta name="author" content="Imam Omar Mochtar">
+  </head>
+
+  <body>
+    <h1 id='title'>{{ title }}</h1>
+    <span style="font-size: 10px;margin-bottom: 100px;">Generated at: {{ generated_at }}</span>
+
+    <table>
+      <thead>
+        <th>No</th>
+        <th>Atas Nama</th>
+        <th></th>
+        {% for month in months %}
+        <th>{{ month.strftime('%b/%C').upper() }}</th>
+        {% endfor %}
+      </thead>
+      <tbody>
+        {% for rekap in rekaps %}
+        <tr{% if rekap.is_blacklisted %} class='blacklisted'{% endif %}>
+          <td>{{ rekap.no }}</td>
+          <td style='text-align: left;'>{{ rekap.nama }}</td>
+          <td>
+            {% if rekap.score != 0 and not rekap.is_blacklisted %}
+              <span class="score score-{{ 'minus' if rekap.score < 0 else 'plus' }}">
+                {% if rekap.score >0 %}+{% endif %}{{ rekap.score }}
+              </span>
+            {% endif %}
+          </td>
+          {% for month in months %}
+            {% if not rekap.is_blacklisted and month in rekap.rekaps %}
+            <td class='checklist'>&#10004;</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Source+Sans+Pro:400,700");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@page {
+  margin: 2cm;
+  @bottom-left {
+    color: #1ee494;
+    content: '{{ footer_left }}'; }
+  @bottom-right {
+    color: #a9a;
+    content: '{{ footer_right }}';
+    font-size: 9pt; } }
+
+html {
+  color: #14213d;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11pt;
+  line-height: 1.6; }
+  html body {
+    margin: 0; }
+  html h1 {
+    color: #1ee494;
+    font-family: Pacifico;
+    font-size: 30pt;
+    margin: 0; }
+    html h1#title {
+      text-align: center;
+      margin-bottom: 10px; }
+  html table {
+    border-collapse: collapse;
+    width: 100%; }
+    html table th {
+      border-bottom: .2mm solid #a9a;
+      color: #a9a;
+      font-size: 10pt;
+      font-weight: 400;
+      padding-bottom: .25cm;
+      text-transform: uppercase;
+      font-weight: bold; }
+    html table td {
+      padding-top: 7mm; }
+    html table th, html table td {
+      text-align: center; }
+      html table th:first-of-type, html table td:first-of-type {
+        text-align: left; }
+    html table tbody tr td.checklist {
+      color: #1ee494;
+      font-weight: bold; }
+    html table tbody tr td span.score {
+      color: white;
+      display: block;
+      font-family: Pacifico;
+      line-height: 1.6; }
+    html table tbody tr td span.score-minus {
+      background: #fbc847; }
+    html table tbody tr td span.score-plus {
+      background: #1ee494; }
+    html table tbody tr.blacklisted {
+      background: black;
+      color: white; }
+
