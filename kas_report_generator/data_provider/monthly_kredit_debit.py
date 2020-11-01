@@ -44,7 +44,6 @@ class MonthlyKreditDebit(object):
             self.__total[key] = 0
         self.__total[key] += amount
 
-
     def parse_value(self, row: List[str]) -> Record_T:
         
         if len(COL_MAPPER) != len(row):
@@ -54,18 +53,12 @@ class MonthlyKreditDebit(object):
 
         result: Record_T = dict(zip(COL_MAPPER, row))
 
-        kredit = convert_money(result['kredit'])
-        debit = convert_money(result['debit'])
-
         result.update({
             'tgl': datetime.strptime(result['tgl'], DATE_FORMAT).date(),
-            'kredit': kredit,
-            'debit': debit,
+            'kredit': convert_money(result['kredit']),
+            'debit': convert_money(result['debit']),
             'saldo': convert_money(result['saldo'])
         })
-
-        self.incr_total('kredit', kredit)
-        self.incr_total('debit', debit)
 
         if result['kredit'] == 0 and result['debit'] == 0:
             raise DataValidationFailed(f'Invalid data, both kredit and debit has zero value')
@@ -92,6 +85,8 @@ class MonthlyKreditDebit(object):
                 break
             result.append(parsed)
 
+            self.incr_total('kredit', parsed['kredit'])
+            self.incr_total('debit', parsed['debit'])
         return result
 
     def summarize(self) -> Dict[str, Any]:
