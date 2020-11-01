@@ -83,19 +83,25 @@ class GLSBot(BotBase):
         bot_utils.send(bot, update, 'Generating, please wait ...', reply=True)
 
         now: datetime.datetime = utils.now()
-        rekap_kas: Dict[str, Any] = self.gsheet.rekap_kas(self.config.begin_rekap, self.config.blacklist)
+        rekap_kas: Dict[str, Any] = self.gsheet.rekap_kas(self.config.begin_rekap,
+                                                          self.config.blacklist)
 
-        generated_at = now.strftime('%d-%m-%Y %H:%M:%S')
+        monthly_rekap: Dict[str, Any] = self.gsheet.rekap_monthly_kredit_debit()
+        last_rekap_tgl: str = monthly_rekap['detail'][-1]['tgl'].strftime('%d %b %Y')
+        title_period: str = f'01 - {last_rekap_tgl}'
+
         variables: Dict[str, Any] = { 
-                        'rekaps': rekap_kas,
-                        'footer_left': self.config.footer_left,
-                        'footer_right': self.config.footer_right,
-                        'generated_at': generated_at,
-                        'months': utils.range_prev_months(utils.now_date(now).replace(day=1), 2),
-                        'title': self.config.report_title
+                        'rekaps':        rekap_kas,
+                        'footer_left':   self.config.footer_left,
+                        'footer_right':  self.config.footer_right,
+                        'months':        utils.range_prev_months(utils.now_date(now).replace(day=1), 2),
+                        'title':         self.config.report_title,
+                        'now':           now,
+                        'period':        title_period,
+                        'monthly_rekap': monthly_rekap 
                     }
         temp_dest: str = tempfile.mktemp()
-        filename: str = f'laporan_kas_{generated_at}.pdf'
+        filename: str = f"laporan_kas_{now.strftime('%d-%m-%Y %H:%M:%S')}.pdf"
         self.logger.info(f'Writing to temporary destination {temp_dest}')
         PDF.write(temp_dest, variables)
 
@@ -105,9 +111,8 @@ class GLSBot(BotBase):
 
     @property
     def gsheet(self) -> GSheet :
-        return GSheet(credentials=self.config.gsheet_sa, 
-                      spreadsheet_id=self.config.gsheet_id,
-                      cell_range=self.config.gsheet_cellrange)
+        return GSheet(credentials=self.config.gsheet_sa,
+                      spreadsheet_id=self.config.gsheet_id)
 
 
 if __name__ == '__main__':
