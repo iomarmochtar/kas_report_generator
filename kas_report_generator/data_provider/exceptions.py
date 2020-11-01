@@ -1,0 +1,1 @@
+class DataValidationFailed(Exception): pass

@@ -10,7 +10,53 @@
 
   <body>
     <h1 id='title'>{{ title }}</h1>
-    <span style="font-size: 10px;margin-bottom: 100px;">Generated at: {{ generated_at }}</span>
+    <span style="font-size: 10px;margin-bottom: 100px;">Generated at: {{ now.strftime('%d-%m-%Y %H:%M:%S') }}</span>
+
+    <table>
+      <tr>
+        <td>
+          <table class="tbl_summary">
+            <thead>
+              <th>*Kredit</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rp {{ "{:,.0f}".format(monthly_rekap.total.kredit) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td></td>
+        <td>
+          <table class="tbl_summary">
+            <thead>
+              <th>*Debit</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rp {{ "{:,.0f}".format(monthly_rekap.total.debit) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+        <td></td>
+        <td>
+          <table class="tbl_summary">
+            <thead>
+              <th>Saldo</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rp {{ "{:,.0f}".format(monthly_rekap.detail[-1].saldo) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <span style="font-size: 10px;"><b>*</b>{{ period }}</span>
+    <br/>
+    <br/>
 
     <table>
       <thead>

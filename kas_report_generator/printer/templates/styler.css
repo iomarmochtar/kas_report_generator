@@ -58,3 +58,6 @@ html {
       background: black;
       color: white; }
 
+    .tbl_summary tbody tr td {
+      font-size: 20pt;
+    }
