@@ -64,7 +64,7 @@
         <th>Atas Nama</th>
         <th></th>
         {% for month in months %}
-        <th>{{ month.strftime('%b/%C').upper() }}</th>
+        <th>{{ month.strftime('%b/%y').upper() }}</th>
         {% endfor %}
       </thead>
       <tbody>
